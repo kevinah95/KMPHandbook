@@ -11,10 +11,10 @@ import { group } from './config/sidebar';
  */
 export const sidebar = [
 	// Start tab
-	group('start', {
+	group('foundations', {
 		items: [
 			'guides/example',
-			group('start.welcome', {
+			group('foundations.hello', {
 				items: [
 					'guides/example',
 					'guides/example',
@@ -22,10 +22,10 @@ export const sidebar = [
 					'guides/example',
 				],
 			}),
-			group('start.newProject', {
+			group('foundations.intro', {
 				items: ['guides/example', 'guides/example', 'guides/example'],
 			}),
-			group('start.config', {
+			group('foundations.kotlin', {
 				items: [
 					'guides/example',
 					'guides/example',
@@ -35,7 +35,7 @@ export const sidebar = [
 					'guides/example',
 				],
 			}),
-			group('start.migrate', {
+			group('foundations.intro', {
 				collapsed: true,
 				autogenerate: { directory: 'guides/example' },
 			}),
@@ -43,14 +43,14 @@ export const sidebar = [
 	}),
 
 	// Guides tab
-	group('guides', {
+	group('core', {
 		items: [
-			group('guides.routing', {
+			group('core.interop', {
 				items: [
 					'guides/example',
 				],
 			}),
-			group('guides.ui', {
+			group('core.networking', {
 				items: [
 					'guides/example',
 				],

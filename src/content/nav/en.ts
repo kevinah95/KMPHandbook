@@ -1,33 +1,32 @@
 export default {
-	start: 'Start',
-	'start.welcome': 'Welcome, world!',
-	'start.newProject': 'Start a new project',
-	'start.config': 'Configuration',
-	'start.migrate': 'Migrate to Astro',
+    // PARTE I: LOS CIMIENTOS
+    foundations: 'Part I: Foundations',
+    'foundations.intro': 'Intro to Ecosystem',
+    'foundations.kotlin': 'Kotlin Language (Level 0)',
+    'foundations.hello': 'Hello World KMP',
 
-	guides: 'Guides and recipes',
-	'guides.routing': 'Routing and navigation',
-	'guides.ui': 'Build your UI',
-	'guides.content': 'Add content to your site',
-	'guides.serverRendering': 'Server rendering',
-	'guides.upgrade': 'Upgrade',
-	'guides.upgrade.major': 'Major upgrade guides',
-	'guides.recipes': 'How-to recipes',
+    // PARTE II: EL NÚCLEO COMPARTIDO
+    core: 'Part II: Shared Core',
+    'core.interop': 'Interop & Platform',
+    'core.networking': 'Networking (Ktor)',
+    'core.persistence': 'Persistence (SQLDelight)',
+    'core.arch': 'Architecture',
 
-	reference: 'Reference',
-	'reference.runtime': 'Runtime API',
-	'reference.other': 'Other development APIs',
-	'reference.syntax': 'Astro Template Syntax',
-	'reference.experimental': 'Experimental features',
+    // PARTE III: UI COMPARTIDA (COMPOSE)
+    ui: 'Part III: Compose UI',
+    'ui.thinking': 'Thinking in Compose',
+    'ui.components': 'Building Components',
+    'ui.navigation': 'Navigation & Effects',
 
-	integrations: 'Integrations',
-	'integrations.ui': 'UI frameworks',
-	'integrations.adapters': 'Adapters',
-	'integrations.other': 'Other official integrations',
+    // PARTE IV: INTEGRACIÓN NATIVA & DESPLIEGUE
+    native: 'Part IV: Native & Deploy',
+    'native.android': 'Android Integration',
+    'native.ios': 'iOS Integration',
+    'native.dist': 'Distribution (CI/CD)',
 
-	thirdParty: 'Third-party services',
-	'thirdParty.deployment': 'Deployment guides',
-	'thirdParty.cms': 'Content management systems',
-	'thirdParty.backend': 'Backend services',
-	'thirdParty.media': 'Image and video hosting',
+    // APÉNDICES
+    reference: 'Reference',
+    'reference.glossary': 'Glossary',
+    'reference.gradle': 'Gradle DSL',
+    'reference.catalog': 'UI Catalog',
 };
