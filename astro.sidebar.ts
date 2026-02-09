@@ -10,39 +10,29 @@ import { group } from './config/sidebar';
  *
  */
 export const sidebar = [
-	// Start tab
+	// PARTE I: LOS CIMIENTOS
 	group('foundations', {
 		items: [
 			'guides/example',
-			group('foundations.hello', {
-				items: [
-					'guides/example',
-					'guides/example',
-					'guides/example',
-					'guides/example',
-				],
-			}),
 			group('foundations.intro', {
-				items: ['guides/example', 'guides/example', 'guides/example'],
+				items: [
+					'foundations/intro',
+				],
 			}),
 			group('foundations.kotlin', {
 				items: [
-					'guides/example',
-					'guides/example',
-					'guides/example',
-					'guides/example',
-					'guides/example',
-					'guides/example',
-				],
+                    'foundations/kotlin',
+                ],
 			}),
-			group('foundations.intro', {
-				collapsed: true,
-				autogenerate: { directory: 'guides/example' },
+			group('foundations.hello', {
+				items: [
+					'foundations/hello',
+				],
 			}),
 		],
 	}),
 
-	// Guides tab
+	// PARTE II: EL NÚCLEO COMPARTIDO
 	group('core', {
 		items: [
 			group('core.interop', {
@@ -55,6 +45,76 @@ export const sidebar = [
 					'guides/example',
 				],
 			}),
+            group('core.persistence', {
+				items: [
+					'guides/example',
+				],
+			}),
+            group('core.arch', {
+				items: [
+					'guides/example',
+				],
+			}),
 		],
 	}),
+    // PARTE III: UI COMPARTIDA (COMPOSE)
+    group('ui', {
+		items: [
+			group('ui.thinking', {
+				items: [
+					'guides/example',
+				],
+			}),
+			group('ui.components', {
+				items: [
+					'guides/example',
+				],
+			}),
+            group('ui.navigation', {
+				items: [
+					'guides/example',
+				],
+			}),
+		],
+	}),
+    // PARTE IV: INTEGRACIÓN NATIVA & DESPLIEGUE
+    group('native', {
+		items: [
+			group('native.android', {
+				items: [
+					'guides/example',
+				],
+			}),
+			group('native.ios', {
+				items: [
+					'guides/example',
+				],
+			}),
+            group('native.dist', {
+				items: [
+					'guides/example',
+				],
+			}),
+		],
+	}),
+    // APÉNDICES
+    group('reference', {
+        items: [
+            group('reference.glossary', {
+                items: [
+                    'guides/example',
+                ],
+            }),
+            group('reference.gradle', {
+                items: [
+                    'guides/example',
+                ],
+            }),
+            group('reference.catalog', {
+                items: [
+                    'guides/example',
+                ],
+            }),
+        ],
+    }),
 ] satisfies StarlightUserConfig['sidebar'];
