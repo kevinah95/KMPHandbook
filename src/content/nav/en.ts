@@ -2,7 +2,7 @@ export default {
     // PARTE I: LOS CIMIENTOS
     foundations: 'Part I: Foundations',
     'foundations.intro': 'Intro to Ecosystem',
-    'foundations.kotlin': 'Kotlin Language (Level 0)',
+    'foundations.kotlin': 'Kotlin Language Basics',
     'foundations.hello': 'Hello World KMP',
 
     // PARTE II: EL NÚCLEO COMPARTIDO

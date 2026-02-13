@@ -13,7 +13,7 @@ export const sidebar = [
 	// PARTE I: LOS CIMIENTOS
 	group('foundations', {
 		items: [
-			'guides/example',
+			// 'guides/example',
 			group('foundations.intro', {
 				items: [
 					'foundations/intro',

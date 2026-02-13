@@ -1,0 +1,93 @@
+---
+interface Props {
+  code?: string;
+  version?: string;
+  platform?: 'java' | 'js' | 'junit' | 'canvas';
+  theme?: 'idea' | 'darcula' | 'default';
+  lines?: boolean;
+  foldedButton?: boolean;
+  highlightOnly?: boolean;
+  autoComplete?: boolean;
+  highlightOnFly?: boolean;
+  matchBrackets?: boolean;
+  autoIndent?: boolean;
+  minHeight?: string;
+  args?: string;
+  jsLibs?: string;
+}
+
+const {
+  code = `fun main() {
+    println("Hello, World!")
+}`,
+  version = "2.1.0",
+  platform = "java",
+  theme = "idea",
+  lines = true,
+  foldedButton = true,
+  highlightOnly = false,
+  autoComplete = true,
+  highlightOnFly = true,
+  matchBrackets = true,
+  autoIndent = true,
+  minHeight = "200px",
+  args,
+  jsLibs
+} = Astro.props;
+---
+
+<div class="kotlin-playground-container">
+  <code
+    class="kotlin-playground"
+    data-version={version}
+    data-target-platform={platform}
+    theme={theme}
+    lines={lines.toString()}
+    folded-button={foldedButton.toString()}
+    data-highlight-only={highlightOnly ? "true" : undefined}
+    data-autocomplete={autoComplete.toString()}
+    highlight-on-fly={highlightOnFly.toString()}
+    match-brackets={matchBrackets.toString()}
+    auto-indent={autoIndent.toString()}
+    args={args}
+    data-js-libs={jsLibs}
+    //style={`min-height: ${minHeight}`}
+  >{code}</code>
+</div>
+
+<script>
+  import KotlinPlayground from 'kotlin-playground';
+  
+  function initializePlaygrounds() {
+    const playgrounds = document.querySelectorAll('.kotlin-playground');
+    playgrounds.forEach((playground) => {
+      if (!playground.classList.contains('kotlin-playground-initialized')) {
+        KotlinPlayground(playground);
+        playground.classList.add('kotlin-playground-initialized');
+      }
+    });
+  }
+
+  // Initialize on page load
+  document.addEventListener('DOMContentLoaded', initializePlaygrounds);
+  
+  // Re-initialize when navigating in Starlight (SPA navigation)
+  document.addEventListener('astro:page-load', initializePlaygrounds);
+</script>
+
+<style>
+  .kotlin-playground-container {
+    margin: 1rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .kotlin-playground {
+    display: block;
+    width: 100%;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    border: none;
+    background: var(--sl-color-gray-6);
+  }
+</style>

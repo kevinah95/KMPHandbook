@@ -1,5 +1,5 @@
 ---
-title: Example Guide
+title: Hello World KMP
 description: A guide in my new Starlight docs site.
 ---
 
