@@ -5,14 +5,959 @@ description: A guide in my new Starlight docs site.
 
 import KotlinPlayground from '../../../components/KotlinPlayground.astro';
 
-# Hello, Kotlin!
+# About Kotlin
 
-Welcome to Kotlin! Let's start with a simple "Hello, World!" example:
+## Kotlin Basics
+
+### Overview
+
+In this lesson, you'll learn the fundamental concepts of Kotlin programming:
+
+- **Get started**: Setting up IntelliJ IDEA and creating your first project
+- **Operators**: Mathematical, comparison, and assignment operators
+- **Data types**: Integer types, floating-point numbers, and strings
+- **Variables**: Mutable and immutable variables with type inference
+- **Conditionals**: Control flow with if/else, when statements, and loops
+- **Lists and arrays**: Working with collections
+- **Null safety**: Kotlin's approach to preventing null pointer exceptions 
+
+### Getting Started
+
+#### Your First Kotlin Program
 
 <KotlinPlayground 
   code={`fun main() {
-    println("Hello, Kotlin!")
-    println("Welcome to the KMP Handbook!")
+    println("Hello, world!")
 }`}
-  lines={true}
+/>
+
+#### Passing Arguments to main()
+
+<KotlinPlayground 
+  args={['YourName']}
+  code={`fun main(args: Array<String>) {
+    val name = args.getOrNull(0)?.takeIf { it.isNotBlank() } ?: "Kotlin"
+    println("Hello, $name!")
+}`}
+/>
+
+### Operators
+
+#### Mathematical Operators
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Math operators with integers
+    println("1 + 1 = ${1 + 1}")
+    println("53 - 3 = ${53 - 3}")
+    println("50 / 10 = ${50 / 10}")
+    println("9 % 3 = ${9 % 3}")
+    // Math operators with doubles
+    println("1.0 / 2.0 = ${1.0 / 2.0}")
+    println("2.0 * 3.5 = ${2.0 * 3.5}")
+}`}
+/>
+
+#### Numeric Operator Methods
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Kotlin lets you call methods on numbers
+    println("2.times(3) = \${2.times(3)}")
+    println("3.5.plus(4) = \${3.5.plus(4)}")
+    println("2.4.div(2) = \${2.4.div(2)}")
+}`}
+/>
+
+### Data Types
+
+#### Working with Different Types
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Integer types
+    val byteValue: Byte = 127
+    val shortValue: Short = 32767
+    val intValue: Int = 2147483647
+    val longValue: Long = 9223372036854775807L
+    
+    // Floating-point types
+    val floatValue: Float = 3.14f
+    val doubleValue: Double = 3.141592653589793
+    
+    // Other types
+    val charValue: Char = 'K'
+    val booleanValue: Boolean = true
+    
+    println("Byte: $byteValue")
+    println("Short: $shortValue")
+    println("Int: $intValue")
+    println("Long: $longValue")
+    println("Float: $floatValue")
+    println("Double: $doubleValue")
+    println("Char: $charValue")
+    println("Boolean: $booleanValue")
+}`}
+/>
+
+#### Type Casting
+
+<KotlinPlayground 
+  code={`fun main() {
+    val i: Int = 6
+    println("Int to Byte: \${i.toByte()}")
+    println("Int to Float: \${i.toFloat()}")
+    println("Int to Double: \${i.toDouble()}")
+    
+    // Using underscores for long numbers
+    val oneMillion = 1_000_000
+    val hexBytes = 0xFF_EC_DE_5E
+    println("One million: $oneMillion")
+    println("Hex bytes: $hexBytes")
+}`}
+/>
+
+### Strings
+
+#### String Basics and Templates
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Basic strings
+    val s1 = "Hello world!"
+    val s2 = "Hello world!\n"
+    
+    // Multi-line strings with triple quotes
+    val text = """
+        This is a
+        multi-line
+        string
+    """.trimIndent()
+    
+    // String concatenation
+    val numberOfDogs = 3
+    val numberOfCats = 2
+    val message = "I have $numberOfDogs dogs" + " and $numberOfCats cats"
+    
+    // String templates
+    val i = 10
+    val s = "abc"
+    val length = "$s.length is \${s.length}"
+    
+    // Expression in templates
+    val numberOfShirts = 10
+    val numberOfPants = 5
+    val total = "I have \${numberOfShirts + numberOfPants} items of clothing"
+    
+    println(s1)
+    println(text)
+    println(message)
+    println("i = $i")
+    println(length)
+    println(total)
+}`}
+/>
+
+### Variables
+
+#### Mutable and Immutable Variables
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Immutable variable (val)
+    val name = "Jennifer"
+    println("Name: $name")
+    
+    // Mutable variable (var)
+    var score = 10
+    println("Initial score: $score")
+    score = 20
+    println("Updated score: $score")
+    
+    // Explicit type declaration
+    var width: Int = 12
+    var length: Double = 2.5
+    println("Width: $width, Length: $length")
+    
+    // Type inference
+    val inferredInt = 42        // Int
+    val inferredDouble = 3.14   // Double
+    val inferredString = "Hello" // String
+    
+    println("Inferred types:")
+    println("$inferredInt is \${inferredInt::class.simpleName}")
+    println("$inferredDouble is \${inferredDouble::class.simpleName}")
+    println("$inferredString is \${inferredString::class.simpleName}")
+}`}
+/>
+
+### Conditionals
+
+#### If/Else Statements
+
+<KotlinPlayground 
+  code={`fun main() {
+    val numberOfCups = 30
+    val numberOfPlates = 50
+    
+    if (numberOfCups > numberOfPlates) {
+        println("Too many cups!")
+    } else {
+        println("Not enough cups!")
+    }
+    
+    // Multiple conditions
+    val guests = 30
+    if (guests == 0) {
+        println("No guests")
+    } else if (guests < 20) {
+        println("Small group of people")
+    } else {
+        println("Large group of people!")
+    }
+    
+    // If as expression
+    val temperature = 20
+    val isHot = if (temperature > 40) true else false
+    println("Is it hot? $isHot")
+}`}
+/>
+
+#### Ranges and When Statements
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Ranges
+    val numberOfStudents = 50
+    if (numberOfStudents in 1..100) {
+        println("Valid number of students: $numberOfStudents")
+    }
+    
+    // When statement
+    val results = 45
+    when (results) {
+        0 -> println("No results")
+        in 1..39 -> println("Got results!")
+        else -> println("That's a lot of results!")
+    }
+    
+    // When as expression
+    val grade = when (results) {
+        in 90..100 -> "A"
+        in 80..89 -> "B"
+        in 70..79 -> "C"
+        in 60..69 -> "D"
+        else -> "F"
+    }
+    println("Grade: $grade")
+}`}
+/>
+
+#### Loops
+
+<KotlinPlayground 
+  code={`fun main() {
+    // For loop with array
+    val pets = arrayOf("dog", "cat", "canary")
+    print("Pets: ")
+    for (element in pets) {
+        print("$element ")
+    }
+    println()
+    
+    // For loop with index
+    println("Pets with index:")
+    for ((index, element) in pets.withIndex()) {
+        println("Item at $index is $element")
+    }
+    
+    // Range loops
+    print("Numbers 1-5: ")
+    for (i in 1..5) print(i)
+    println()
+    
+    print("Countdown: ")
+    for (i in 5 downTo 1) print(i)
+    println()
+    
+    print("Even numbers: ")
+    for (i in 2..10 step 2) print(i)
+    println()
+    
+    // While loop
+    var bicycles = 0
+    while (bicycles < 3) {
+        bicycles++
+        println("Bicycle $bicycles added")
+    }
+    
+    // Repeat loop
+    print("Repeat: ")
+    repeat(3) {
+        print("Hello! ")
+    }
+    println()
+}`}
+/>
+
+### Lists and Arrays
+
+#### Working with Lists
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Immutable list
+    val instruments = listOf("trumpet", "piano", "violin")
+    println("Instruments: $instruments")
+    
+    // Mutable list
+    val myList = mutableListOf("trumpet", "piano", "violin")
+    myList.remove("violin")
+    myList.add("drums")
+    println("Modified list: $myList")
+    
+    // List operations
+    val books = listOf("nature", "biology", "birds")
+    val booksStartingWithB = books.filter { it[0] == 'b' }
+    println("Books starting with 'b': $booksStartingWithB")
+}`}
+/>
+
+#### Working with Arrays
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Array of strings
+    val pets = arrayOf("dog", "cat", "canary")
+    println("Pets: \${pets.contentToString()}")
+    
+    // Mixed type array
+    val mix = arrayOf("hats", 2)
+    println("Mixed array: \${mix.contentToString()}")
+    
+    // Typed arrays
+    val numbers = intArrayOf(1, 2, 3)
+    println("Numbers: \${numbers.contentToString()}")
+    
+    // Combining arrays
+    val numbers2 = intArrayOf(4, 5, 6)
+    val combined = numbers + numbers2
+    println("Combined: \${combined.contentToString()}")
+}`}
+/>
+
+### Null Safety
+
+#### Null Safety Features
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Variables cannot be null by default
+    var numberOfBooks: Int? = null
+    println("Books: $numberOfBooks")
+    
+    // Safe call operator
+    numberOfBooks = 6
+    numberOfBooks = numberOfBooks?.dec()
+    println("After decrement: $numberOfBooks")
+    
+    // Elvis operator
+    numberOfBooks = null
+    val finalCount = numberOfBooks?.dec() ?: 0
+    println("Final count: $finalCount")
+    
+    // Safe call with string
+    val name: String? = "Kotlin"
+    println("Name length: \${name?.length}")
+    
+    val nullName: String? = null
+    println("Null name length: \${nullName?.length}")
+    
+    // Not-null assertion (use carefully!)
+    val definitelyNotNull: String? = "Hello"
+    val length = definitelyNotNull!!.length
+    println("Definite length: $length")
+}`}
+/>
+
+### Error Handling with Result
+
+Managing errors in Kotlin can be done using the `Result<T>` class, which allows you to handle success and failure cases without throwing exceptions.
+
+<KotlinPlayground 
+  code={`fun divide(a: Int, b: Int): Result<Double> {
+    return if (b == 0) {
+        Result.failure(Exception("Division par zéro"))
+    } else {
+        Result.success(a.toDouble() / b)
+    }
+}
+
+fun main() {
+    val result = divide(10, 2)
+    
+    result.fold(
+        onSuccess = { value -> println("✅ Résultat: $value") },
+        onFailure = { error -> println("❌ Erreur: \${error.message}") }
+    )
+    
+    // Avec erreur
+    divide(10, 0).fold(
+        onSuccess = { value -> println("✅ Résultat: $value") },
+        onFailure = { error -> println("❌ Erreur: \${error.message}") }
+    )
+}`}
+/>
+
+## Functions
+
+### Overview
+
+In this lesson, you'll learn about:
+
+- **Programs in Kotlin**: Creating main functions and running programs
+- **Expressions**: Everything has a value in Kotlin
+- **Functions**: Creating and using functions with parameters
+- **Compact functions**: Single-expression functions
+- **Lambdas and higher-order functions**: Functional programming concepts
+- **List filters**: Working with collections functionally
+
+### Programs in Kotlin
+
+#### Creating a Main Function
+
+<KotlinPlayground 
+  code={`fun main(args: Array<String>) {
+    println("Hello, world!")
+    
+    // Using arguments if provided
+    if (args.isNotEmpty()) {
+        println("Hello, \${args[0]}!")
+    }
+}`}
+/>
+
+### Everything Has a Value
+
+#### Expressions vs Statements
+
+<KotlinPlayground 
+  code={`fun main() {
+    // If as expression
+    val temperature = 20
+    val isHot = if (temperature > 40) true else false
+    println("Is hot: $isHot")
+    
+    // Even println returns a value (Unit)
+    val isUnit = println("This is an expression")
+    println("println returns: $isUnit")
+    
+    // When as expression
+    val number = 42
+    val description = when {
+        number < 0 -> "negative"
+        number == 0 -> "zero"
+        number > 0 -> "positive"
+        else -> "unknown"
+    }
+    println("$number is $description")
+}`}
+/>
+
+### Functions in Kotlin
+
+#### Basic Functions
+
+<KotlinPlayground 
+  code={`// Simple function
+fun printHello() {
+    println("Hello World")
+}
+
+// Function with parameters
+fun greet(name: String) {
+    println("Hello, $name!")
+}
+
+// Function with return value
+fun add(a: Int, b: Int): Int {
+    return a + b
+}
+
+// Unit returning function (explicit)
+fun printMessage(message: String): Unit {
+    println(message)
+}
+
+// Unit returning function (implicit)
+fun printAnotherMessage(message: String) {
+    println(message)
+}
+
+fun main() {
+    printHello()
+    greet("Kotlin")
+    val sum = add(5, 3)
+    println("Sum: $sum")
+    printMessage("Explicit Unit")
+    printAnotherMessage("Implicit Unit")
+}`}
+/>
+
+#### Function Parameters
+
+<KotlinPlayground 
+  code={`// Default parameters
+fun drive(speed: String = "fast") {
+    println("driving $speed")
+}
+
+// Required parameters
+fun tempToday(day: String, temp: Int) {
+    println("Today is $day and it's $temp degrees.")
+}
+
+// Mix of default and required parameters
+fun reformat(
+    str: String,
+    divideByCamelHumps: Boolean,
+    wordSeparator: Char,
+    normalizeCase: Boolean = true
+) {
+    println("Reformatting: $str with separator '$wordSeparator'")
+}
+
+fun main() {
+    // Using default parameter
+    drive()
+    drive("slow")
+    drive(speed = "turtle-like")
+    
+    // Required parameters
+    tempToday("Monday", 25)
+    
+    // Named arguments
+    reformat("TodayIsADayLikeNoOther", false, '_')
+    reformat("TodayIsADayLikeNoOther", divideByCamelHumps = false, wordSeparator = '_')
+}`}
+/>
+
+### Compact Functions
+
+#### Single-Expression Functions
+
+<KotlinPlayground 
+  code={`// Regular function
+fun doubleRegular(x: Int): Int {
+    return x * 2
+}
+
+// Compact function
+fun double(x: Int): Int = x * 2
+
+// Compact function with type inference
+fun triple(x: Int) = x * 3
+
+// More examples
+fun square(x: Int) = x * x
+fun isEven(x: Int) = x % 2 == 0
+fun max(a: Int, b: Int) = if (a > b) a else b
+
+fun main() {
+    println("Double 5: \${double(5)}")
+    println("Triple 4: \${triple(4)}")
+    println("Square 6: \${square(6)}")
+    println("Is 8 even? \${isEven(8)}")
+    println("Max of 10 and 15: \${max(10, 15)}")
+}`}
+/>
+
+### Lambdas and Higher-Order Functions
+
+#### Lambda Functions
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Basic lambda
+    val waterFilter = { level: Int -> level / 2 }
+    var dirtLevel = 20
+    println("Filtered water: \${waterFilter(dirtLevel)}")
+    
+    // Lambda with explicit type
+    val waterFilter2: (Int) -> Int = { level -> level / 2 }
+    println("Filtered water 2: \${waterFilter2(dirtLevel)}")
+    
+    // Lambda with multiple parameters
+    val multiply: (Int, Int) -> Int = { a, b -> a * b }
+    println("Multiply 4 and 5: \${multiply(4, 5)}")
+    
+    // Lambda with no parameters
+    val greeting: () -> String = { "Hello from lambda!" }
+    println(greeting())
+
+    // Lambda with multiple statements
+    val multiStatement = { x: Int, y: Int ->
+      println("Calculating sum of $x and $y")
+      val result = x + y
+      println("Result: $result")
+      result // Last expression is the return value
+      }
+      println(multiStatement(3, 4))
+   }`}
+/>
+
+#### Higher-Order Functions
+
+<KotlinPlayground 
+  code={`// Higher-order function that takes a function as parameter
+fun encodeMsg(msg: String, encode: (String) -> String): String {
+    return encode(msg)
+}
+
+// Named function to pass as argument
+fun reverseString(input: String): String = input.reversed()
+
+fun main() {
+    // Using lambda
+    val enc1: (String) -> String = { input -> input.uppercase() }
+    println("Encoded with lambda: \${encodeMsg("hello", enc1)}")
+    
+    // Using function reference
+    println("Encoded with function reference: \${encodeMsg("hello", ::reverseString)}")
+    
+    // Inline lambda
+    println("Encoded inline: \${encodeMsg("hello") { it.lowercase() }}")
+    
+    // Using built-in higher-order function
+    repeat(3) {
+        println("Repeated message $it")
+    }
+}`}
+/>
+
+### List Filters
+
+#### Basic Filtering
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Basic filter
+    val numbers = listOf(1, 2, 3, 4, 5, 6)
+    val evenNumbers = numbers.filter { it % 2 == 0 }
+    println("Even numbers: $evenNumbers")
+    
+    // Filter with explicit parameter
+    val positiveNumbers = numbers.filter { n: Int -> n > 0 }
+    println("Positive numbers: $positiveNumbers")
+    
+    // Filter strings
+    val books = listOf("nature", "biology", "birds")
+    val booksStartingWithB = books.filter { it[0] == 'b' }
+    println("Books starting with 'b': $booksStartingWithB")
+    
+    // Using 'it' implicitly
+    val colors = listOf("red", "red-orange", "dark red", "orange", "bright orange")
+    val redColors = colors.filter { it.contains("red") }
+    println("Colors containing 'red': $redColors")
+}`}
+/>
+
+#### Eager vs Lazy Filters
+
+<KotlinPlayground 
+  code={`fun main() {
+    val instruments = listOf("viola", "cello", "violin", "guitar", "piano")
+    
+    // Eager filter (creates new list immediately)
+    val eager = instruments.filter { it[0] == 'v' }
+    println("Eager filter: $eager")
+    
+    // Lazy filter using sequence
+    val lazy = instruments.asSequence().filter { it[0] == 'v' }
+    println("Lazy filter sequence: $lazy")
+    
+    // Convert sequence back to list
+    val lazyToList = lazy.toList()
+    println("Lazy to list: $lazyToList")
+    
+    // Chaining operations with sequences
+    val result = instruments.asSequence()
+        .filter { it.length > 5 }
+        .map { it.uppercase() }
+        .toList()
+    println("Chained operations: $result")
+}`}
+/>
+
+#### Other List Transformations
+
+<KotlinPlayground 
+  code={`fun main() {
+    // Map transformation
+    val numbers = listOf(1, 2, 3, 4, 5)
+    val doubled = numbers.map { it * 2 }
+    println("Doubled: $doubled")
+    
+    val names = listOf("alice", "bob", "charlie")
+    val uppercased = names.map { it.uppercase() }
+    println("Uppercased: $uppercased")
+    
+    // Flatten nested collections
+    val numberSets = listOf(setOf(1, 2, 3), setOf(4, 5), setOf(1, 2))
+    val flattened = numberSets.flatten()
+    println("Flattened: $flattened")
+    
+    // Combining operations
+    val words = listOf("hello", "world", "kotlin", "programming")
+    val result = words
+        .filter { it.length > 5 }
+        .map { it.uppercase() }
+        .sorted()
+    println("Combined operations: $result")
+}`}
+/>
+
+## Classes and Objects
+
+### Overview
+
+In this lesson, you'll learn about:
+
+- **Classes**: Blueprints for objects with properties and methods
+- **Constructors**: Creating and initializing objects
+- **Inheritance**: Extending classes and implementing interfaces
+- **Extension functions**: Adding functionality to existing classes
+- **Special classes**: Data classes, enums, objects, and companion objects
+- **Code organization**: Packages and visibility modifiers
+
+### Classes
+
+#### Basic Class Definition
+
+<KotlinPlayground 
+  code={`// Simple class
+class House {
+    val color: String = "white"
+    val numberOfWindows: Int = 2
+    val isForSale: Boolean = false
+    
+    fun updateColor(newColor: String) {
+        println("Updating color to $newColor")
+    }
+}
+
+// Class with constructor parameters
+class Person(val name: String, var age: Int)
+
+// Class with behavior
+class Circle(val radius: Double) {
+    fun area(): Double {
+        return Math.PI * radius * radius
+    }
+    
+    fun circumference(): Double {
+        return 2 * Math.PI * radius
+    }
+}
+
+fun main() {
+    val myHouse = House()
+    println("House color: \${myHouse.color}")
+    myHouse.updateColor("blue")
+    
+    val person = Person("Alice", 30)
+    println("Person: \${person.name}, age \${person.age}")
+    person.age = 31
+    println("Updated age: \${person.age}")
+    
+    val circle = Circle(5.0)
+    println("Circle area: \${circle.area()}")
+    println("Circle circumference: \${circle.circumference()}")
+}`}
+/>
+
+#### Constructors and Initialization
+
+<KotlinPlayground 
+  code={`// Class with default parameters
+class Box(val length: Int, val width: Int = 20, val height: Int = 40) {
+    init {
+        println("Creating box: \${length}x\${width}x\${height}")
+    }
+    
+    fun volume() = length * width * height
+}
+
+// Class with multiple constructors
+class Rectangle(val width: Double, val height: Double) {
+    constructor(side: Double) : this(side, side) {
+        println("Creating square with side $side")
+    }
+    
+    constructor(width: Int, height: Int) : this(width.toDouble(), height.toDouble()) {
+        println("Creating rectangle from integers")
+    }
+    
+    fun area() = width * height
+    fun perimeter() = 2 * (width + height)
+}
+
+fun main() {
+    val box1 = Box(100, 20, 40)
+    val box2 = Box(length = 100)
+    println("Box1 volume: \${box1.volume()}")
+    println("Box2 volume: \${box2.volume()}")
+    
+    val rectangle1 = Rectangle(10.0, 5.0)
+    val square = Rectangle(8.0)
+    val rectangle2 = Rectangle(12, 6)
+    
+    println("Rectangle area: \${rectangle1.area()}")
+    println("Square area: \${square.area()}")
+    println("Rectangle2 perimeter: \${rectangle2.perimeter()}")
+}`}
+/>
+
+#### Properties with Custom Getters and Setters
+
+<KotlinPlayground 
+  code={`class Person(var firstName: String, var lastName: String) {
+    // Custom getter
+    val fullName: String
+        get() = "$firstName $lastName"
+    
+    // Property with custom getter and setter
+    var displayName: String = ""
+        get() = if (field.isEmpty()) fullName else field
+        set(value) {
+            field = value.trim()
+        }
+    
+    // Computed property
+    val initials: String
+        get() = "\${firstName.first()}\${lastName.first()}"
+}
+
+class Temperature {
+    var celsius: Double = 0.0
+        set(value) {
+            field = value
+            println("Temperature set to $value°C")
+        }
+    
+    val fahrenheit: Double
+        get() = celsius * 9/5 + 32
+    
+    val kelvin: Double
+        get() = celsius + 273.15
+}
+
+fun main() {
+    val person = Person("John", "Doe")
+    println("Full name: \${person.fullName}")
+    println("Display name: \${person.displayName}")
+    println("Initials: \${person.initials}")
+    
+    person.displayName = "Johnny"
+    println("Custom display name: \${person.displayName}")
+    
+    val temp = Temperature()
+    temp.celsius = 25.0
+    println("\${temp.celsius}°C = \${temp.fahrenheit}°F = \${temp.kelvin}K")
+}`}
+/>
+
+### Inheritance
+
+#### Interfaces
+
+<KotlinPlayground 
+  code={`interface Shape {
+    fun computeArea(): Double
+    fun computePerimeter(): Double
+    
+    // Interface can have default implementation
+    fun describe(): String = "This is a shape with area \${computeArea()}"
+}
+
+interface Drawable {
+    fun draw(): String
+}
+
+class Circle(val radius: Double) : Shape, Drawable {
+    override fun computeArea() = Math.PI * radius * radius
+    override fun computePerimeter() = 2 * Math.PI * radius
+    override fun draw() = "Drawing a circle with radius $radius"
+}
+
+class Rectangle(val width: Double, val height: Double) : Shape, Drawable {
+    override fun computeArea() = width * height
+    override fun computePerimeter() = 2 * (width + height)
+    override fun draw() = "Drawing a rectangle \${width}x\${height}"
+}
+
+fun main() {
+    val circle = Circle(3.0)
+    val rectangle = Rectangle(4.0, 5.0)
+    
+    println("Circle: \${circle.describe()}")
+    println("Rectangle: \${rectangle.describe()}")
+    println(circle.draw())
+    println(rectangle.draw())
+    
+    val shapes: List<Shape> = listOf(circle, rectangle)
+    shapes.forEach { shape ->
+        println("Area: \${shape.computeArea()}, Perimeter: \${shape.computePerimeter()}")
+    }
+}`}
+/>
+
+#### Class Inheritance
+
+<KotlinPlayground 
+  code={`// Base class must be marked as 'open'
+open class Vehicle(val brand: String, val model: String) {
+    open fun start() {
+        println("$brand $model is starting...")
+    }
+    
+    open fun stop() {
+        println("$brand $model is stopping...")
+    }
+    
+    fun info() = "$brand $model"
+}
+
+class Car(brand: String, model: String, val doors: Int) : Vehicle(brand, model) {
+    override fun start() {
+        println("Car $brand $model with $doors doors is starting with ignition...")
+    }
+}
+
+class Motorcycle(brand: String, model: String, val engineSize: Int) : Vehicle(brand, model) {
+    override fun start() {
+        println("Motorcycle $brand $model with \${engineSize}cc engine is starting...")
+    }
+    
+    fun wheelie() {
+        println("$brand $model is doing a wheelie!")
+    }
+}
+
+fun main() {
+    val car = Car("Toyota", "Camry", 4)
+    val motorcycle = Motorcycle("Honda", "CBR", 600)
+    
+    car.start()
+    car.stop()
+    println("Car info: \${car.info()}")
+    
+    motorcycle.start()
+    motorcycle.wheelie()
+    motorcycle.stop()
+    
+    // Polymorphism
+    val vehicles: List<Vehicle> = listOf(car, motorcycle)
+    vehicles.forEach { it.start() }
+}`}
 />
