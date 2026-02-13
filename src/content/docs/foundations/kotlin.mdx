@@ -961,3 +961,61 @@ fun main() {
     vehicles.forEach { it.start() }
 }`}
 />
+
+## Advanced Data Modeling
+
+### Data Classes vs Classes
+
+Normal classes compare by reference, but in KMP we often need to compare data (like checking if the UI state changed).
+
+<KotlinPlayground 
+  code={`data class User(val name: String, val id: Int)
+class UserClass(val name: String, val id: Int)
+
+fun main() {
+    val user1 = User("Alice", 1)
+    val user2 = User("Alice", 1)
+    
+    val class1 = UserClass("Bob", 2)
+    val class2 = UserClass("Bob", 2)
+    
+    // Data classes compare content automatically
+    println("Data Class Equals: \${user1 == user2}") // true
+    
+    // Normal classes compare memory address
+    println("Normal Class Equals: \${class1 == class2}") // false
+    
+    // Data classes have built-in copy
+    val user3 = user1.copy(name = "Alice Smith")
+    println(user3)
+}`}
+/>
+
+### Sealed Classes for State
+
+In Multiplatform development, strictly typing your UI state is crucial. Sealed classes act like "Super Enums" that can hold data.
+
+<KotlinPlayground 
+  code={`// Defines a restricted hierarchy
+sealed class UiState {
+    object Loading : UiState()
+    data class Success(val data: String) : UiState()
+    data class Error(val message: String) : UiState()
+}
+
+fun handleState(state: UiState) {
+    // 'when' is exhaustive - compiler forces you to handle all cases
+    when (state) {
+        is UiState.Loading -> println("Spinner visible...")
+        is UiState.Success -> println("Displaying: \${state.data}")
+        is UiState.Error -> println("Ups! \${state.message}")
+    }
+}
+
+fun main() {
+    val currentState: UiState = UiState.Success("User Data Loaded")
+    handleState(currentState)
+    
+    handleState(UiState.Error("No Internet"))
+}`}
+/>
