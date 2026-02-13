@@ -1019,3 +1019,198 @@ fun main() {
     handleState(UiState.Error("No Internet"))
 }`}
 />
+
+## Concurrent Programming
+
+### Overview
+
+In this lesson, you'll learn about managing concurrent tasks in Kotlin:
+
+- **Threads vs Coroutines**: Understanding the difference between heavy threads and lightweight coroutines
+- **Suspend Functions**: The building blocks of coroutines
+- **Coroutines Scopes**: managing the lifecycle of coroutines
+- **Async/Await**: Handling asynchronous results
+- **Dispatchers**: Controlling where code executes (Main, IO, Default)
+
+### Coroutines Basics
+
+#### Threads vs Coroutines
+
+Coroutines are often called "lightweight threads". You can run thousands of coroutines on a few threads.
+
+<KotlinPlayground 
+  code={`import kotlinx.coroutines.*
+import java.util.concurrent.atomic.AtomicInteger
+
+fun main() = runBlocking {
+    val c = AtomicInteger()
+    
+    // Launching 100,000 coroutines
+    val jobs = List(100_000) {
+        launch {
+            c.incrementAndGet()
+        }
+    }
+    
+    jobs.forEach { it.join() }
+    println("Completed \${c.get()} coroutines")
+    
+    // Trying this with Threads would likely crash with OutOfMemoryError
+}`}
+/>
+
+#### Your First Coroutine
+
+<KotlinPlayground 
+  code={`import kotlinx.coroutines.*
+
+fun main() = runBlocking { // this: CoroutineScope
+    launch { // launch a new coroutine and continue
+        delay(1000L) // non-blocking delay for 1 second
+        println("World!")
+    }
+    println("Hello")
+}`}
+/>
+
+### Suspend Functions
+
+Suspend functions can pause their execution without blocking the thread, allowing other coroutines to run.
+
+<KotlinPlayground 
+  code={`import kotlinx.coroutines.*
+
+// 'suspend' keyword is required to call other suspend functions like delay()
+suspend fun doWorld() {
+    delay(1000L)
+    println("World!")
+}
+
+fun main() = runBlocking {
+    launch {
+        doWorld()
+    }
+    println("Hello")
+}`}
+/>
+
+### Concurrency Patterns
+
+#### Sequential vs Concurrent
+
+<KotlinPlayground 
+  code={`import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
+
+suspend fun doSomethingUsefulOne(): Int {
+    delay(1000L) // pretend we are doing something useful here
+    return 13
+}
+
+suspend fun doSomethingUsefulTwo(): Int {
+    delay(1000L) // pretend we are doing something useful here, too
+    return 29
+}
+
+fun main() = runBlocking {
+    // Sequential execution (takes ~2000ms)
+    val time = measureTimeMillis {
+        val one = doSomethingUsefulOne()
+        val two = doSomethingUsefulTwo()
+        println("The answer is \${one + two}")
+    }
+    println("Sequential completed in \$time ms")
+    
+    // Concurrent execution using async (takes ~1000ms)
+    val timeAsync = measureTimeMillis {
+        val one = async { doSomethingUsefulOne() }
+        val two = async { doSomethingUsefulTwo() }
+        println("The answer is \${one.await() + two.await()}")
+    }
+    println("Concurrent completed in \$timeAsync ms")
+}`}
+/>
+
+#### Job Lifecycle
+
+<KotlinPlayground 
+  code={`import kotlinx.coroutines.*
+
+fun main() = runBlocking {
+    val job = launch {
+        repeat(1000) { i ->
+            println("job: I'm sleeping \$i ...")
+            delay(500L)
+        }
+    }
+    
+    delay(1300L) // delay a bit
+    println("main: I'm tired of waiting!")
+    
+    // Cancel the job
+    job.cancel() 
+    job.join() // waits for job's completion
+    println("main: Now I can quit.")
+}`}
+/>
+
+## Lesson 5: Evolution of Kotlin
+
+### Overview
+
+Kotlin is constantly evolving. This lesson covers advanced ecosystem features:
+
+- **Kotlin Multiplatform (KMP)**: Sharing code between iOS, Android, Web, and Desktop
+- **Server-side Kotlin**: Using Ktor and Spring Boot
+- **Scripting**: Using Kotlin for build scripts (Gradle .kts)
+- **Compose Multiplatform**: Declarative UI for multiple platforms
+
+### Kotlin Multiplatform
+
+#### Shared Logic Example
+
+While KMP setup is usually complex, here is how shared logic looks conceptually.
+
+<KotlinPlayground 
+  code={`// Common Code (Shared)
+expect class Platform() {
+    val name: String
+}
+
+class Greeting {
+    fun greeting(): String = "Hello, \${Platform().name}!"
+}
+
+// Android Code (Actual)
+// actual class Platform {
+//     actual val name: String = "Android \${android.os.Build.VERSION.SDK_INT}"
+// }
+
+// iOS Code (Actual)
+// actual class Platform {
+//     actual val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
+// }
+
+fun main() {
+    // In a real KMP project, this runs on specific targets
+    println("This code structure allows sharing business logic across platforms.")
+}`}
+/>
+
+### Modern Language Features
+
+#### Data Objects (Kotlin 1.9+)
+
+Better `toString` representation for singleton objects.
+
+<KotlinPlayground 
+  code={`// Before (Object)
+object Logger
+// Now (Data Object)
+data object BetterLogger
+
+fun main() {
+    println("Old object: \$Logger") // Prints memory address (e.g., Logger@5b213...)
+    println("New data object: \$BetterLogger") // Prints "BetterLogger"
+}`}
+/>
