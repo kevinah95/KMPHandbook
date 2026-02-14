@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
-import { sidebar } from './astro.sidebar';
+import { sidebarTopics } from './astro.sidebar';
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,7 +10,9 @@ export default defineConfig({
 			title: 'KMP Handbook',
 			customCss: ['./src/styles/custom.css'],
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/kevinah95/KMPHandbook' }],
-			sidebar,
+			plugins: [
+				sidebarTopics,
+			]
 		}),
 	],
 });

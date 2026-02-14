@@ -7,6 +7,7 @@ export default {
 
     // PARTE II: EL NÚCLEO COMPARTIDO
     core: 'Part II: Shared Core',
+    'core.di': 'Dependency Injection (Koin)',
     'core.interop': 'Interop & Platform',
     'core.networking': 'Networking (Ktor)',
     'core.persistence': 'Persistence (SQLDelight)',
