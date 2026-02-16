@@ -1,0 +1,153 @@
+---
+title: Setup Koin
+description: Setting up Koin for dependency injection in Kotlin Multiplatform projects
+---
+
+import { Steps } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+This guide will walk you through the steps to set up Koin for dependency injection in your Kotlin Multiplatform project. We'll cover how to add Koin dependencies, organize your modules, and create a shared initialization function.
+This is the version of Koin used in this guide:
+[![Koin](https://img.shields.io/badge/Koin-4.1.1-yellow.svg?style=flat&logo=kotlin)](https://insert-koin.io)
+
+<Steps>
+
+1. Edit Version Catalog to include Koin dependencies.
+
+    ```toml title=gradle/libs.versions.toml
+    [versions]
+    koin-bom = "4.1.1"
+
+    [libraries]
+    # Koin
+    koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+    koin-core = { module = "io.insert-koin:koin-core" }
+    koin-android = { module = "io.insert-koin:koin-android" }
+    koin-compose = { module = "io.insert-koin:koin-compose" }
+    koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+    koin-ktor = { module = "io.insert-koin:koin-ktor" }
+    koin-test = { module = "io.insert-koin:koin-test" }
+    ```
+
+    Sync your Gradle project to download the new dependencies.
+
+2. Add Koin dependencies to your project modules.
+
+    ```gradle title="composeApp/build.gradle.kts"
+    sourceSets {
+        commonMain.dependencies {
+            // ... other dependencies
+            // Koin
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
+        }
+    }
+    ```
+
+    ```gradle title="androidApp/build.gradle.kts"
+    sourceSets {
+        androidMain.dependencies {
+            // ... other dependencies
+            // Koin
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.android)
+        }
+    }
+    ```
+
+    ```gradle title="shared/build.gradle.kts"
+    sourceSets {
+        commonMain.dependencies {
+            // ... other dependencies
+            // Koin
+            implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose.viewmodel)
+        }
+    }
+    ```
+</Steps>
+
+## Placeholder for Koin Shared Module Pattern
+
+The following code snippets are placeholders to illustrate how you might organize your Koin modules in a Kotlin Multiplatform project. The actual implementation will depend on the specific architecture and requirements of your application.
+
+### Module organization by layer
+
+Create a module for each layer of your application:
+
+```kotlin title="shared/src/commonMain/kotlin/di/modules/DataModule.kt"
+val dataModule = module {
+    // Define your data layer dependencies here
+}
+```
+
+```kotlin title="shared/src/commonMain/kotlin/di/modules/DomainModule.kt"
+val domainModule = module {
+    // Define your domain layer dependencies here
+}
+```
+
+```kotlin title="shared/src/commonMain/kotlin/di/modules/PresentationModule.kt"
+val presentationModule = module {
+    // Define your presentation layer dependencies here
+}
+```
+
+### Platform-specific module
+
+<Aside>
+The special case is the platform module, which will be extended by each platform to include platform-specific dependencies.
+</Aside>
+
+
+
+```kotlin title="shared/src/commonMain/kotlin/di/modules/PlatformModule.kt"
+expect fun platformModule(): Module
+```
+
+Then, in each platform module, you can provide the actual implementation of the `platformModule` function to include platform-specific dependencies:
+
+```kotlin title="shared/src/androidMain/kotlin/di/modules/PlatformModule.android.kt"
+actual fun platformModule(): Module = module {
+    // Define Android-specific dependencies here
+}
+```
+
+```kotlin title="shared/src/iosMain/kotlin/di/modules/PlatformModule.ios.kt"
+actual fun platformModule(): Module = module {
+    // Define iOS-specific dependencies here
+}
+```
+
+### Shared module
+
+Create a shared module that includes all the common dependencies:
+
+```kotlin title="shared/src/commonMain/kotlin/di/modules/SharedModule.kt"
+val sharedModule = module {
+    // Define shared dependencies here
+    // special case for platform-specific dependencies calling as a function.
+    includes(dataModule, domainModule, presentationModule, platformModule()) 
+}
+```
+
+### Create a shared initialization function
+
+Create a common initialization function that can be extended by each platform:
+
+```kotlin title="shared/src/commonMain/kotlin/di/KoinHelper.kt"
+fun initKoin(config: KoinAppDeclaration? = null): KoinApplication {
+    return startKoin {
+        includes(config)  // Platform-specific extensions
+        modules(sharedModule)
+    }
+}
+```
+
+## Further reading
+
+- [**Setting Up Koin**](https://insert-koin.io/docs/setup/) in the official Koin documentation.
+- [**Koin Docs > Kotlin Multiplatform > Sharing Patterns**](https://insert-koin.io/docs/reference/koin-core/kmp-shared-modules) for more details on organizing your Koin modules in a multiplatform project.

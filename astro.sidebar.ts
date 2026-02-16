@@ -22,7 +22,7 @@ export const sidebarTopics = starlightSidebarTopics([
         icon: 'information',
         items: [{
             label: 'Dependency Injection',
-            items: ['core/di/koin'],
+            items: ['core/di/koin', 'core/di/setup'],
         }],
     },
 ]);
