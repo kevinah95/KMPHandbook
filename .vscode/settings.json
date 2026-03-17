@@ -1,0 +1,7 @@
+{
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use the Conventional Commits standard, but assume this repository is a book. Use 'feat' for new chapters or content, 'fix' for spelling/grammar or plot corrections, 'refactor' for stylistic rewriting, and 'style' for formatting. Be concise and write the commit message in English."
+    }
+  ]
+}
