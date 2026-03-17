@@ -23,6 +23,10 @@ export const sidebarTopics = starlightSidebarTopics([
         items: [{
             label: 'Dependency Injection',
             items: ['core/di/koin', 'core/di/setup'],
+        },
+        {
+            label: 'Networking',
+            items: ['core/networking/ktor', 'core/networking/setup'],
         }],
     },
 ]);

@@ -1,0 +1,159 @@
+---
+title: Setup Ktor
+description: Setting up Ktor for networking in Kotlin Multiplatform projects
+---
+
+import { Steps } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
+
+This chapter is based on the official Ktor client setup flow and adapted for a Kotlin Multiplatform (Android + iOS) app.
+We'll add dependencies, configure platform engines, and create a reusable shared `HttpClient`. This is the version of Ktor used in this guide:
+[![Ktor](https://img.shields.io/badge/Ktor-2.3.0-purple.svg?style=flat&logo=kotlin)](https://ktor.io)
+
+<Aside>
+Use one Ktor version for all client artifacts to avoid dependency mismatches.
+</Aside>
+
+## 1) Add Ktor to your version catalog
+
+```toml title="gradle/libs.versions.toml"
+[versions]
+ktor = "3.3.1"
+kotlinx-serialization = "1.9.0"
+
+[libraries]
+# Ktor core + plugins
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# Engines
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+
+# Kotlin serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+```
+
+## 2) Configure dependencies by source set
+
+<Steps>
+
+1. Add common client dependencies in `commonMain`.
+
+	```gradle title="shared/build.gradle.kts"
+	kotlin {
+		sourceSets {
+			commonMain.dependencies {
+				implementation(libs.ktor.client.core)
+				implementation(libs.ktor.client.content.negotiation)
+				implementation(libs.ktor.serialization.kotlinx.json)
+				implementation(libs.ktor.client.logging)
+				implementation(libs.kotlinx.serialization.json)
+			}
+
+			androidMain.dependencies {
+				implementation(libs.ktor.client.okhttp)
+			}
+
+			iosMain.dependencies {
+				implementation(libs.ktor.client.darwin)
+			}
+		}
+	}
+	```
+
+2. Enable Kotlin serialization plugin (required by `@Serializable`).
+
+	```kotlin title="shared/build.gradle.kts"
+	plugins {
+		kotlin("plugin.serialization")
+	}
+	```
+
+3. Sync Gradle.
+
+</Steps>
+
+## 3) Build a shared `HttpClient`
+
+Create one client factory in `commonMain` and install Ktor plugins such as `ContentNegotiation`.
+
+```kotlin title="shared/src/commonMain/kotlin/networking/HttpClientFactory.kt"
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
+
+fun createHttpClient() = HttpClient {
+	install(ContentNegotiation) {
+		json(
+			Json {
+				ignoreUnknownKeys = true
+				isLenient = true
+			}
+		)
+	}
+
+	install(Logging) {
+		logger = Logger.DEFAULT
+		level = LogLevel.INFO
+	}
+}
+```
+
+### Why no explicit engine here?
+
+Ktor can select the engine automatically based on source-set dependencies:
+- Android resolves to `OkHttp`.
+- iOS resolves to `Darwin`.
+
+This follows the Ktor multiplatform recommendation and keeps common code clean.
+
+## 4) Add a simple API call in shared code
+
+```kotlin title="shared/src/commonMain/kotlin/networking/ApiService.kt"
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class HealthResponse(val status: String)
+
+class ApiService(
+	private val client: io.ktor.client.HttpClient,
+	private val baseUrl: String,
+) {
+	suspend fun health(): HealthResponse {
+		return client.get("$baseUrl/health").body()
+	}
+}
+```
+
+## 5) Wire it into your app
+
+Initialize the client once (for example in your DI module), then inject `ApiService` where needed.
+
+```kotlin title="shared/src/commonMain/kotlin/di/NetworkModule.kt"
+val httpClient = createHttpClient()
+val apiService = ApiService(
+	client = httpClient,
+	baseUrl = "https://your-api.example.com"
+)
+```
+
+## Notes for KMP projects
+
+- Keep request/response models in `commonMain`.
+- Add platform-only networking details (if needed) in `androidMain` / `iosMain`.
+- If you need engine-specific tuning, create `expect/actual` wrappers for client creation.
+
+## Further reading
+
+- [Ktor: Create a new client application](https://ktor.io/docs/client-create-new-application.html#new-project)
+- [Ktor Client engines](https://ktor.io/docs/client-engines.html)
+- [Ktor ContentNegotiation and serialization](https://ktor.io/docs/client-serialization.html)
