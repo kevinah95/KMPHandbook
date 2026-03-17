@@ -9,3 +9,7 @@ tasks:
   update:astro:
     cmds:
       - npx @astrojs/upgrade
+  update:dependencies:
+    cmds:
+      - npx npm-check-updates -u
+      - npm install
