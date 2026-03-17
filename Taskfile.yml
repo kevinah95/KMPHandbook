@@ -6,3 +6,6 @@ tasks:
   default:
     cmds:
       - npm run dev
+  update:astro:
+    cmds:
+      - npx @astrojs/upgrade
