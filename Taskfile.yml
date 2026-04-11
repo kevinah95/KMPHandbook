@@ -13,3 +13,6 @@ tasks:
     cmds:
       - npx npm-check-updates -u
       - npm install
+  env:activate:
+    cmds:
+      - nvm use
